@@ -42,7 +42,7 @@ class NotesService {
 
     const result = await this._pool.query(query);
 
-    if (result.rows.length === 0) {
+    if (!result.rows.length) {
       throw new NotFoundError('catatan tidak ditemukan');
     }
     return result.rows.map(mapDBToModel)[0];
@@ -57,7 +57,7 @@ class NotesService {
 
     const result = await this._pool.query(query);
 
-    if (result.rows.length === 0) {
+    if (!result.rows.length) {
       throw new NotFoundError('Gagal memperbarui catatan. Id tidak ditemukan');
     }
   }
@@ -70,7 +70,7 @@ class NotesService {
 
     const result = await this._pool.query(query);
 
-    if (result.rows.length === 0) {
+    if (!result.rows.length) {
       throw new NotFoundError('catatan gagal dihapus. Id tidak ditemukan');
     }
   }
