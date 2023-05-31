@@ -17,12 +17,15 @@ class NotesHandler {
     try {
       this._validator.validateNotePayload(req.payload);
       const { title = 'untitled', body, tags } = req.payload;
+      const { id: credentialId } = req.auth.credentials;
 
-      const noteId = await this._service.addNote({ title, body, tags });
+      const noteId = await this._service.addNote({
+        title, body, tags, owner: credentialId,
+      });
 
       const res = h.response({
         status: 'success',
-        message: 'catatan berhasil ditambahkan',
+        message: 'Catatan berhasil ditambahkan',
         data: {
           noteId,
         },
@@ -50,8 +53,9 @@ class NotesHandler {
     }
   }
 
-  async getNotesHandler() {
-    const notes = await this._service.getNotes();
+  async getNotesHandler(req) {
+    const { id: credentialId } = req.auth.credentials;
+    const notes = await this._service.getNotes(credentialId);
 
     return {
       status: 'success',
@@ -64,6 +68,9 @@ class NotesHandler {
   async getNoteByIdHandler(req, h) {
     try {
       const { id } = req.params;
+      const { id: credentialId } = req.auth.credentials;
+
+      await this._service.verifyNoteOwner(id, credentialId);
       const note = await this._service.getNoteById(id);
       return {
         status: 'success',
@@ -95,11 +102,13 @@ class NotesHandler {
     try {
       this._validator.validateNotePayload(req.payload);
       const { id } = req.params;
+      const { id: credentialId } = req.auth.credentials;
 
+      await this._service.verifyNoteOwner(id, credentialId);
       await this._service.editNoteById(id, req.payload);
       return {
         status: 'success',
-        messaage: 'catatan berhasil diperbarui',
+        messaage: 'Catatan berhasil diperbarui',
       };
     } catch (error) {
       if (error instanceof ClientError) {
@@ -124,11 +133,14 @@ class NotesHandler {
   async deleteNoteByIdHandler(req, h) {
     try {
       const { id } = req.params;
+      const { id: credentialId } = req.auth.credentials;
+
+      await this._service.verifyNoteOwner(id, credentialId);
       await this._service.deleteNoteById(id);
 
       return {
         status: 'success',
-        message: 'catatan berhasil dihapus',
+        message: 'Catatan berhasil dihapus',
       };
     } catch (error) {
       if (error instanceof ClientError) {
