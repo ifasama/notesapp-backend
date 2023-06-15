@@ -93,8 +93,8 @@ const init = async () => {
     {
       plugin: collaborations,
       options: {
-        notesService,
         collaborationsService,
+        notesService,
         validator: CollaborationsValidator,
       },
     },
