@@ -79,6 +79,7 @@ class NotesHandler {
         },
       };
     } catch (error) {
+      // console.log(error);
       if (error instanceof ClientError) {
         const res = h.response({
           status: 'fail',
@@ -108,9 +109,10 @@ class NotesHandler {
       await this._service.editNoteById(id, req.payload);
       return {
         status: 'success',
-        messaage: 'Catatan berhasil diperbarui',
+        message: 'Catatan berhasil diperbarui',
       };
     } catch (error) {
+      // console.log(error);
       if (error instanceof ClientError) {
         const res = h.response({
           status: 'fail',
