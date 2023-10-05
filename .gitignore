@@ -4,6 +4,7 @@ new_user_credentials.csv
 new_user_credentials1.csv
 .env
 .prod.env
-Notes API Trial.postman_collection.json
-Notes API Trial.postman_environment.json
+src/api/uploads/file
+notes-api-trial.postman_collection.json
+notes-api-trial.postman_environment.json
 dicodingacademydeveloper_credentials.csv
